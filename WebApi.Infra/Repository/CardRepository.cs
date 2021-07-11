@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using WebApi.Application.Interfaces;
 using WebApi.Domain.Entity;
 
@@ -11,12 +12,10 @@ namespace WebApi.Infra.Repository
     public class CardRepository : ICardRepository
     {
         private readonly WebApi.Infra.Context.Context _context;
-        private readonly ILogger<CardRepository> _logger;
 
-        public CardRepository(Context.Context context, ILogger<CardRepository> logger)
+        public CardRepository(Context.Context context)
         {
             _context = context;
-            _logger = logger;
         }
 
         public async Task InsertCardAsync(Card card)
@@ -26,11 +25,11 @@ namespace WebApi.Infra.Repository
                 _context.Card.Add(card);
                 await _context.SaveChangesAsync();
 
-                _logger.LogInformation($"Card: {card.CardNumber}, Saved...");
+                Log.Information($"Card: {card.CardNumber}, Saved...");
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error to save card: " + ex.Message);
+                Log.Error("Error to save card: " + ex.Message);
                 throw new Exception("Error to insert Card: " + ex.Message);
             }
         }
@@ -46,23 +45,23 @@ namespace WebApi.Infra.Repository
 
                 if (card.Excluded)
                 {
-                    _logger.LogWarning($"Card {card.CardNumber} Excluded...");
+                    Log.Warning($"Card {card.CardNumber} Excluded...");
                     throw new Exception("Card Excluded...");
                 }
                 else if (card == null)
                 {
-                    _logger.LogInformation("Card not found...");
+                    Log.Error("Card not found...");
                     throw new Exception("card not found...");
                 }
                 else
                 {
-                    _logger.LogInformation($"Found Card: {card.CardNumber}");
+                    Log.Error($"Found Card: {card.CardNumber}");
                     return card;
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error to find card: " + ex.Message);
+                Log.Error("Error to find card: " + ex.Message);
                 throw new Exception("Error to find Card: " + ex.Message);
             }
         }

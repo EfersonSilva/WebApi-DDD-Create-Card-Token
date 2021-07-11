@@ -5,19 +5,13 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using WebApi.Application.Interfaces;
 
 namespace WebApi.Application.CreateToken
 {
     public class CreateToken : ICreateToken
     {
-        private readonly ILogger<CreateToken> _logger;
-
-        public CreateToken(ILogger<CreateToken> logger)
-        {
-            _logger = logger;
-        }
-
         public long CreatTokenAsync(TokenCreate request)
         {
             try
@@ -28,13 +22,13 @@ namespace WebApi.Application.CreateToken
 
                 long token = GenerateToken(listFourDigits, request.Cvv);
 
-                _logger.LogInformation("token created...");
+               Log.Information("token created...");
 
                 return token;
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error to create token:" + ex.Message);
+                Log.Error("Error to create token:" + ex.Message);
                 throw new Exception(ex.Message);
             }
         }

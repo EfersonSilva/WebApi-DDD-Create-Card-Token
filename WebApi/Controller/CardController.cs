@@ -16,12 +16,10 @@ namespace WebApi.Controller
     public class CardController : ControllerBase
     {
         private readonly ICardApplication _cardApplication;
-        private readonly ILogger<CardController> _logger;
 
-        public CardController(ICardApplication cardApplication, ILogger<CardController> logger)
+        public CardController(ICardApplication cardApplication)
         {
             _cardApplication = cardApplication;
-            _logger = logger;
         }
 
         [HttpPost]
@@ -29,14 +27,14 @@ namespace WebApi.Controller
         {
             try
             {
-                _logger.LogInformation($"Saving card: {cardRequest.CardNumber}.");
+                Log.Information($"Saving card: {cardRequest.CardNumber}.");
                 CardResponse returnCard = await _cardApplication.SaveCardAsync(cardRequest);
 
                 return Ok(returnCard);
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error to Save Card..." + ex.Message);
+                Log.Error("Error to Save Card..." + ex.Message);
 
                 return new StatusCodeResult(500);
             }
