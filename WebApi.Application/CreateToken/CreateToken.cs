@@ -12,10 +12,18 @@ namespace WebApi.Application.CreateToken
 {
     public class CreateToken : ICreateToken
     {
-        public long CreatTokenAsync(TokenCreate request)
+        
+        public long CreatTokenAsync(CreateTokenRequest request)
         {
             try
             {
+                if(request.CardNumber == 0 || request.Cvv == 0)
+                {
+                    Log.Information("Card Number or Cvv invalid.");
+                    throw new Exception("Card Number or Cvv invalid.");
+                }
+                   
+
                 string fourNumberCardString = ExtractDigits(request.CardNumber);
 
                 List<int> listFourDigits = SeparatorDigits(fourNumberCardString);

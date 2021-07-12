@@ -4,12 +4,16 @@ using System.Text;
 
 namespace WebApi.Application.CreateToken
 {
-    public class TokenCreate
+    public class CreateTokenRequest
     {
         public long CardNumber { get; set; }
         public int Cvv { get; set; }
 
-        public TokenCreate(long cardNumber, int cvv)
+        public CreateTokenRequest()
+        {
+        }
+
+        public CreateTokenRequest(long cardNumber, int cvv)
         {
             CardNumber = cardNumber;
             Cvv = cvv;

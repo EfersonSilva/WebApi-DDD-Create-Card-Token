@@ -26,6 +26,7 @@ namespace WebApi.Application.Command
         public async Task<CardResponse> SaveCardAsync(CardRequest cardRequest)
         {
             var validator = await _validator.ValidateAsync(cardRequest);
+            ValidedType(cardRequest.CustomerId, cardRequest.CardNumber, cardRequest.Cvv);
 
             Log.Information($"Card: {cardRequest.CardNumber}, valided...");
 
@@ -40,9 +41,20 @@ namespace WebApi.Application.Command
             await _cardRepository.InsertCardAsync(card);
 
             Log.Information("Creating token...");
-            var token = _createToken.CreatTokenAsync(new TokenCreate(cardRequest.CardNumber, cardRequest.Cvv));
+            var token = _createToken.CreatTokenAsync(new CreateTokenRequest(cardRequest.CardNumber, cardRequest.Cvv));
 
             return new CardResponse(card.CardId, token);
+        }
+
+        public bool ValidedType(int customerId, long numberCard, int cvv)
+        {
+            if (customerId.GetType() != typeof(int) && numberCard.GetType() != typeof(long) && cvv.GetType() != typeof(int))
+            {
+                Log.Information("Type Invalided of card.");
+                throw new Exception("Type Invalided of your card.");
+            }
+
+            return true;
         }
     }
 }

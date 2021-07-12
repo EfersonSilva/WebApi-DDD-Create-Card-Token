@@ -34,14 +34,14 @@ namespace WebApi.Infra.Repository
             }
         }
 
-        public async Task<Card> FindCardAsynbc(int id)
+        public async Task<Card> FindCardAsync(int cardId)
         {
             try
             {
                 StringBuilder query = new StringBuilder();
-                query.Append("Select CardId, CardNumber, CustomerId, CreationAt From [dbo].[Card] where CardId == @id");
+                query.Append("Select CardId, CardNumber, CustomerId, CreationAt From [dbo].[Card] where CardId == @cardId");
 
-                var card = await _context.Card.FromSqlRaw(query.ToString(), id).FirstOrDefaultAsync();
+                var card = await _context.Card.FromSqlRaw(query.ToString(), cardId).FirstOrDefaultAsync();
 
                 if (card.Excluded)
                 {

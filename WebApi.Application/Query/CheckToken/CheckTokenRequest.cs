@@ -11,6 +11,10 @@ namespace WebApi.Application.CreateToken
         public long Token { get; set; }
         public int Cvv { get; set; }
 
+        public CheckTokenRequest()
+        {
+        }
+
         public CheckTokenRequest(int customerId, int cardId, long token, int cvv)
         {
             CustomerId = customerId;

@@ -33,13 +33,13 @@ namespace WebApi.Application.Query.CheckToken
                 throw new Exception($"{validator.Errors}");
             }
 
-            var card = await _cardRepository.FindCardAsynbc(checkTokenRequest.CardId);
+            var card = await _cardRepository.FindCardAsync(checkTokenRequest.CardId);
 
-            var minuts = DateTime.Now - card.CreationAt;
+            var timeStop = card.CreationAt + TimeSpan.FromMinutes(30);
 
-            if (minuts < TimeSpan.FromMinutes(30))
+            if (DateTime.Now < timeStop)
             {
-                long token = _createToken.CreatTokenAsync(new TokenCreate(card.CardNumber, checkTokenRequest.Cvv));
+                long token = _createToken.CreatTokenAsync(new CreateTokenRequest(card.CardNumber, checkTokenRequest.Cvv));
 
                 return ComparerData(checkTokenRequest, card, token);
             }

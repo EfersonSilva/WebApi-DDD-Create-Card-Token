@@ -9,6 +9,6 @@ namespace WebApi.Application.Interfaces
     public interface ICardRepository
     {
         Task InsertCardAsync(Card card);
-        Task<Card> FindCardAsynbc(int id);
+        Task<Card> FindCardAsync(int id);
     }
 }

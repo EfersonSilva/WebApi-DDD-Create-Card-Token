@@ -8,6 +8,6 @@ namespace WebApi.Application.Interfaces
 {
     public interface ICreateToken
     {
-        long CreatTokenAsync(TokenCreate request);
+        long CreatTokenAsync(CreateTokenRequest request);
     }
 }
