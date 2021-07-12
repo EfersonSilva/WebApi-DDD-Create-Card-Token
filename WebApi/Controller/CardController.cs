@@ -30,13 +30,13 @@ namespace WebApi.Controller
                 Log.Information($"Saving card: {cardRequest.CardNumber}.");
                 CardResponse returnCard = await _cardApplication.SaveCardAsync(cardRequest);
 
-                return Ok(returnCard);
+                return Ok(new { Sucess = true, data = returnCard });
             }
             catch (Exception ex)
             {
                 Log.Error("Error to Save Card..." + ex.Message);
 
-                return new StatusCodeResult(500);
+                return BadRequest(new { sucess = false, StatusCodeResult = StatusCode(400) });
             }
         }
     }

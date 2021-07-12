@@ -28,17 +28,17 @@ namespace WebApi.Controller
                 if (validation)
                 {
                     Log.Information("Token Valided. ");
-                    return Ok(true);
+                    return Ok(new { Sucess = validation, StatusCode = StatusCode(200) });
                 }
                 else
                 {
                     Log.Information("Token is not Valided. ");
-                    return NotFound(false);
+                    return NotFound(new { Sucess = false, error = "Token is not Valided...", StatusCodeResult = StatusCode(400) });
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception(ex.Message);
+                return BadRequest(new { sucess = false, StatusCodeResult = StatusCode(400) });
             }
            
         }
